@@ -1,5 +1,11 @@
-import styles from "./page.module.css";
+// import styles from "./page.module.css";
+
+import Navbar from "@/components/NavBar/NavBar";
 
 export default function Home() {
-  return <div className={styles.page}>The intial website for sukkon</div>;
+  return (
+    <div>
+      <Navbar />
+    </div>
+  );
 }
