@@ -4,39 +4,56 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import { Container, Stack } from "@mui/material";
+import { Buttons, navBarTitles } from "./consts";
+import Link from "next/link";
 
-const Navbar = () => {
+const NavBar: React.FC = () => {
   return (
-    <AppBar position="static" sx={{ backgroundColor: "#4caf50", py: 2 }}>
+    <AppBar
+      className="header"
+      position="static"
+      sx={{ backgroundColor: "#4caf50", py: 2 }}
+    >
       <Container maxWidth="lg">
         <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
-          <Typography variant="h6" component="div">
-            Sukkon
-          </Typography>
-          <Stack direction="row" spacing={4}>
-            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-              Home
-            </Typography>
-            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-              Features
-            </Typography>{" "}
-            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-              Overview
-            </Typography>{" "}
-            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-              Team
-            </Typography>{" "}
-            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-              Contact us
+          <Stack>
+            <Typography variant="h5" component="div">
+              Sukkon
             </Typography>
           </Stack>
+          <Stack sx={{ display: "flex", flexGrow: "1" }}>
+            <Stack
+              direction="row"
+              spacing={4}
+              sx={{ margin: "auto", padding: "1rem" }}
+            >
+              {navBarTitles.map((item) => (
+                <Link href={item.title} key={item.key}>
+                  <Typography
+                    sx={{ flexGrow: 1, fontSize: "14px", fontWeight: "600" }}
+                  >
+                    {item.title}
+                  </Typography>
+                </Link>
+              ))}
+            </Stack>
+          </Stack>
           <Stack direction="row" spacing={2}>
-            <Button color="inherit" sx={{ py: 2, px: 3 }}>
-              Login
-            </Button>
-            <Button color="inherit" sx={{ py: 2, px: 3 }}>
-              Get It Now
-            </Button>
+            {Buttons.map((item) => (
+              <Button
+                key={item.key}
+                color="inherit"
+                sx={{
+                  py: 2,
+                  px: 3,
+                  border: "2px solid #fff",
+                  fontSize: "14px",
+                  fontWeight: "600",
+                }}
+              >
+                {item.title}
+              </Button>
+            ))}
           </Stack>
         </Toolbar>
       </Container>
@@ -44,4 +61,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+export default NavBar;
