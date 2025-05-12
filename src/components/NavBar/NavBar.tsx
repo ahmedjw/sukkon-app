@@ -9,18 +9,14 @@ import Link from "next/link";
 
 const NavBar: React.FC = () => {
   return (
-    <AppBar
-      className="header"
-      position="static"
-      sx={{ backgroundColor: "#4caf50", py: 2 }}
-    >
+    <AppBar position="static" sx={{ backgroundColor: "#4caf50", py: 2 }}>
       <Container maxWidth="lg">
-        <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
-          <Stack>
-            <Typography variant="h5" component="div">
-              Sukkon
-            </Typography>
-          </Stack>
+        <Toolbar
+          sx={{ display: "flex", justifyContent: "space-between", }}
+        >
+          <Typography variant="h5" component="div">
+            Sukkon
+          </Typography>
           <Stack sx={{ display: "flex", flexGrow: "1" }}>
             <Stack
               direction="row"
