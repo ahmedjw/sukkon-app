@@ -32,7 +32,7 @@ const HeroSection: React.FC = () => {
                 A powerful app for your mental health.
               </Typography>
               <Typography variant="body1" sx={typographyStyles}>
-                From open source to pro services, Piqes helps you to build,
+                From open source to pro services, Sukkon helps you to build,
                 deploy, test, and monitor apps.
               </Typography>
               <Stack direction="row" spacing={2} flexWrap="wrap">
