@@ -9,7 +9,7 @@ import {
   textSectionStyles,
   imageSectionStyles,
   buttonIconStyle,
-} from "./index.style";
+} from "./HeroSection.style";
 
 const HeroSection: React.FC = () => {
   return (
