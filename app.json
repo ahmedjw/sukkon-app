@@ -1,0 +1,25 @@
+{
+  "expo": {
+    "name": "Sukoun",
+    "slug": "sukoun",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "scheme": "sukoun",
+    "userInterfaceStyle": "light",
+    "assetBundlePatterns": ["**/*"],
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "com.sukoun.app"
+    },
+    "android": {
+      "package": "com.sukoun.app"
+    },
+    "web": {
+      "bundler": "metro"
+    },
+    "plugins": ["expo-localization"],
+    "extra": {
+      "supportedLocales": ["en", "ar"]
+    }
+  }
+}

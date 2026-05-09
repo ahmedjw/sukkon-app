@@ -1,36 +1,74 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Sukoun — Mental Health App
 
-## Getting Started
+> سكون — _tranquility_. A bilingual (EN / AR) mental wellness platform connecting clients with licensed therapists.
 
-First, run the development server:
+This repository is the **Phase 0** scaffold described in [`Plan.md`](./Plan.md): an Expo + React Native + TypeScript app with the design system, base component library, navigation, and i18n + RTL wired up. No backend, no auth, no real data yet.
+
+## Stack
+
+| Layer | Choice |
+| --- | --- |
+| Runtime | Expo (managed) + React Native 0.74 |
+| Language | TypeScript (strict) |
+| Navigation | `@react-navigation/native` + bottom tabs |
+| i18n | `i18next` + `react-i18next` + `expo-localization` |
+| Layout | RTL via `I18nManager.forceRTL` |
+| Styling | StyleSheet + design tokens (`src/theme/tokens.ts`) |
+
+## What's in this scaffold
+
+- **Design tokens** matching the brand: `#3CB371` mint, `#0F2C4F` navy, `#FFC93C` yellow.
+- **Component library**: `Button`, `IconButton`, `Input`, `PasswordInput`, `Chip`, `Card`, `Avatar`, `RatingStars`, `MoodPicker`, `BannerCTA`, `EmptyState`, `Skeleton`, `Toast`, `BottomSheet`, `TherapistCard`, `SessionCard`, `PodcastRow`.
+- **Bottom tab navigator** with the five tabs from the plan: Home / Therapists / Sessions / Community / Podcast.
+- **Home screen** wired with greeting, mood picker, instant/scheduled consult banners, and a top-rated therapists list (mock data).
+- **Locales** `en.json` and `ar.json`. Locale auto-detected from device, RTL applied for Arabic.
+
+## Run
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+yarn install        # or npm install
+yarn start          # opens Expo dev tools
+yarn ios            # iOS simulator (Mac only)
+yarn android        # Android emulator
+yarn web            # browser
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+You'll need Node 18+, Watchman (Mac), and Xcode/Android Studio for native builds. The Expo Go app can run this without native tooling.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Project layout
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
+src/
+  App.tsx              # providers (theme, i18n, navigation, toast)
+  components/          # reusable UI primitives
+  i18n/
+    index.ts           # i18next setup + RTL helper
+    locales/           # en.json, ar.json
+  navigation/
+    RootNavigator.tsx  # bottom tabs
+  screens/
+    HomeScreen.tsx
+    PlaceholderScreen.tsx
+  theme/
+    tokens.ts          # colors / radius / space / font / shadow
+    ThemeContext.tsx   # useTheme()
+index.ts               # Expo entry
+app.json               # Expo config
+```
 
-## Learn More
+## What's next (phases 1–6)
 
-To learn more about Next.js, take a look at the following resources:
+Phase 0 covered. Plan.md lays out the rest:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. **Phase 1 — Auth & Onboarding**: splash, welcome carousel, sign-up/in, forgot password, social auth, locale switch UI.
+2. **Phase 2 — Home & Mood**: persist mood logs, wire to API, top-rated + recommended lists from server.
+3. **Phase 3 — Therapists & Booking**: filter sheet, therapist detail, booking flow, Stripe payment.
+4. **Phase 4 — Live Consultation**: Daily.co/Twilio video, pre-call lobby, in-call UI, post-call rating.
+5. **Phase 5 — Sessions, Podcasts, Community**: players, feed, composer, moderation.
+6. **Phase 6 — Polish, QA, Launch**: a11y, perf, E2E, store submission.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Notes
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- `.expo/` and `node_modules/` are gitignored and regenerated on `yarn install`.
+- App icons / splash images are referenced in `app.json` but not yet committed — drop PNGs into `assets/` to enable EAS builds.
+- Asset paths in mock therapist/session data are placeholders; real images come in Phase 2.
