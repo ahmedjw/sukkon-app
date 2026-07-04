@@ -2,24 +2,59 @@
   "expo": {
     "name": "Sukoun",
     "slug": "sukoun",
-    "version": "0.1.0",
+    "version": "1.0.0",
     "orientation": "portrait",
     "scheme": "sukoun",
     "userInterfaceStyle": "light",
-    "assetBundlePatterns": ["**/*"],
+    "icon": "./assets/icon.png",
+    "splash": {
+      "image": "./assets/splash-icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#FFFFFF"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": false,
-      "bundleIdentifier": "com.sukoun.app"
+      "bundleIdentifier": "com.sukoun.app",
+      "buildNumber": "1",
+      "infoPlist": {
+        "NSCameraUsageDescription": "Sukoun uses your camera for video therapy sessions.",
+        "NSMicrophoneUsageDescription": "Sukoun uses your microphone so you can talk with your therapist during sessions.",
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "android": {
-      "package": "com.sukoun.app"
+      "package": "com.sukoun.app",
+      "versionCode": 1,
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#3CB371"
+      },
+      "permissions": [
+        "android.permission.CAMERA",
+        "android.permission.RECORD_AUDIO"
+      ]
     },
     "web": {
-      "bundler": "metro"
+      "bundler": "metro",
+      "favicon": "./assets/favicon.png"
     },
-    "plugins": ["expo-localization"],
+    "plugins": [
+      "expo-localization",
+      "expo-secure-store"
+    ],
     "extra": {
-      "supportedLocales": ["en", "ar"]
+      "supportedLocales": [
+        "en",
+        "ar"
+      ],
+      "apiBaseUrl": "http://localhost:4000/v1",
+      "apiBaseUrlAndroid": "http://10.0.2.2:4000/v1",
+      "termsUrl": "https://sukoun.app/terms",
+      "privacyUrl": "https://sukoun.app/privacy",
+      "crisisHelplineUrl": "https://findahelpline.com"
     }
   }
 }
