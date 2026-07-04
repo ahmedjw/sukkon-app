@@ -1,0 +1,169 @@
+// Sukoun v0 schema. SQLite-friendly (string-typed enums, JSON-string arrays).
+// Switching to PostgreSQL: change provider + DATABASE_URL, run `prisma migrate dev`.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String    @id @default(cuid())
+  role          String    @default("CLIENT") // CLIENT | THERAPIST | ADMIN
+  email         String    @unique
+  passwordHash  String?
+  name          String
+  avatarUrl     String?
+  locale        String    @default("en")
+  createdAt     DateTime  @default(now())
+
+  moodLogs      MoodLog[]
+  bookings      Booking[]      @relation("ClientBookings")
+  posts         Post[]
+  comments      Comment[]
+  postLikes     PostLike[]
+  savedSessions SavedSession[]
+  therapist     Therapist?
+  resetTokens   PasswordResetToken[]
+}
+
+model PasswordResetToken {
+  id        String   @id @default(cuid())
+  userId    String
+  tokenHash String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model Therapist {
+  id              String    @id @default(cuid())
+  userId          String?   @unique
+  user            User?     @relation(fields: [userId], references: [id])
+  name            String
+  specialty       String
+  yearsExperience Int
+  hourlyRateCents Int
+  rating          Float     @default(0)
+  reviewsCount    Int       @default(0)
+  available       Boolean   @default(true)
+  verified        Boolean   @default(false)
+  gender          String    @default("ANY") // MALE | FEMALE | ANY
+  bio             String
+  languages       String    // JSON: e.g. "[\"en\",\"ar\"]"
+  problems        String    // JSON: e.g. "[\"ANXIETY\",\"DEPRESSION\"]"
+  nextAvailable   String?
+  avatarUrl       String?
+  createdAt       DateTime  @default(now())
+
+  bookings        Booking[] @relation("TherapistBookings")
+}
+
+model Booking {
+  id           String    @id @default(cuid())
+  clientId     String
+  therapistId  String
+  mode         String    // instant | scheduled
+  startsAt     DateTime
+  durationMin  Int
+  amountCents  Int
+  status       String    @default("CONFIRMED") // CONFIRMED | COMPLETED | CANCELLED
+  videoRoomId  String?
+  rating       Int?
+  tipCents     Int?
+  notes        String?
+  createdAt    DateTime  @default(now())
+
+  client       User      @relation("ClientBookings", fields: [clientId], references: [id])
+  therapist    Therapist @relation("TherapistBookings", fields: [therapistId], references: [id])
+
+  @@index([clientId])
+  @@index([therapistId])
+}
+
+model MoodLog {
+  id        String   @id @default(cuid())
+  userId    String
+  mood      String   // HAPPY | EXCITED | NEUTRAL | ANGRY | COOL
+  note      String?
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id])
+
+  @@index([userId, createdAt])
+}
+
+model Session {
+  id          String         @id
+  title       String
+  category    String
+  durationMin Int
+  description String
+  author      String
+  popular     Boolean        @default(false)
+  saves       SavedSession[]
+}
+
+model SavedSession {
+  userId    String
+  sessionId String
+  createdAt DateTime @default(now())
+
+  user    User    @relation(fields: [userId], references: [id])
+  session Session @relation(fields: [sessionId], references: [id])
+
+  @@id([userId, sessionId])
+}
+
+model Podcast {
+  id          String  @id
+  title       String
+  author      String
+  durationMin Int
+  category    String
+  description String
+}
+
+model Post {
+  id              String     @id @default(cuid())
+  authorId        String?
+  authorName      String
+  authorAvatarUrl String?
+  topic           String
+  body            String
+  imageUrl        String?
+  createdAt       DateTime   @default(now())
+
+  author    User?       @relation(fields: [authorId], references: [id])
+  likes     PostLike[]
+  comments  Comment[]
+
+  @@index([topic, createdAt])
+}
+
+model PostLike {
+  postId String
+  userId String
+  post   Post @relation(fields: [postId], references: [id])
+  user   User @relation(fields: [userId], references: [id])
+
+  @@id([postId, userId])
+}
+
+model Comment {
+  id         String   @id @default(cuid())
+  postId     String
+  userId     String?
+  authorName String
+  body       String
+  createdAt  DateTime @default(now())
+
+  post Post  @relation(fields: [postId], references: [id])
+  user User? @relation(fields: [userId], references: [id])
+
+  @@index([postId, createdAt])
+}
