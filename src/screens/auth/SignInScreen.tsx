@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 
 import { useAuth } from '@/auth';
 import { validateEmail, validatePassword } from '@/auth/validation';
-import { Button, Input, PasswordInput, SocialButton, useToast } from '@components/index';
+import { Button, Input, LegalLinks, PasswordInput, SocialButton, useToast } from '@components/index';
 import { colors, font, space } from '@theme/tokens';
 
 type Props = {
@@ -82,17 +82,23 @@ export function SignInScreen({ onSignUp, onForgot }: Props) {
             />
           </View>
 
-          <View style={styles.divider}>
-            <View style={styles.dividerLine} />
-            <Text style={styles.dividerLabel}>{t('auth.or')}</Text>
-            <View style={styles.dividerLine} />
-          </View>
+          {__DEV__ ? (
+            <>
+              <View style={styles.divider}>
+                <View style={styles.dividerLine} />
+                <Text style={styles.dividerLabel}>{t('auth.or')}</Text>
+                <View style={styles.dividerLine} />
+              </View>
 
-          <View style={styles.socialRow}>
-            <SocialButton provider="google" onPress={() => signInWithProvider('google')} />
-            <SocialButton provider="facebook" onPress={() => signInWithProvider('facebook')} />
-            <SocialButton provider="twitter" onPress={() => signInWithProvider('twitter')} />
-          </View>
+              <View style={styles.socialRow}>
+                <SocialButton provider="google" onPress={() => signInWithProvider('google')} />
+                <SocialButton provider="facebook" onPress={() => signInWithProvider('facebook')} />
+                <SocialButton provider="twitter" onPress={() => signInWithProvider('twitter')} />
+              </View>
+            </>
+          ) : null}
+
+          <LegalLinks />
 
           <View style={styles.bottomLink}>
             <Text style={styles.bottomLinkText}>{t('auth.noAccount')} </Text>

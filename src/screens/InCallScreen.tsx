@@ -1,6 +1,15 @@
-import { useEffect, useState } from 'react';
+import { type ComponentType, useEffect, useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import {
+  type LucideProps,
+  MessageCircle,
+  Mic,
+  MicOff,
+  PhoneOff,
+  Video,
+  VideoOff,
+} from 'lucide-react-native';
 import { useTranslation } from 'react-i18next';
 
 import { Avatar } from '@components/index';
@@ -44,7 +53,7 @@ export function InCallScreen({ therapistName, durationMin, onEnd }: Props) {
           {camOn ? (
             <Avatar name={t('incall.you')} size={36} />
           ) : (
-            <Text style={styles.selfTileGlyph}>🚫</Text>
+            <VideoOff size={28} color={colors.surface} strokeWidth={1.6} />
           )}
           <Text style={styles.selfTileLabel}>{t('incall.you')}</Text>
         </View>
@@ -66,25 +75,25 @@ export function InCallScreen({ therapistName, durationMin, onEnd }: Props) {
 
       <View style={styles.controls}>
         <ControlButton
-          glyph={muted ? '🔇' : '🎙️'}
+          icon={muted ? MicOff : Mic}
           label={muted ? t('incall.unmute') : t('incall.mute')}
           active={muted}
           onPress={() => setMuted((v) => !v)}
         />
         <ControlButton
-          glyph={camOn ? '📹' : '🚫'}
+          icon={camOn ? Video : VideoOff}
           label={camOn ? t('incall.camOff') : t('incall.camOn')}
           active={!camOn}
           onPress={() => setCamOn((v) => !v)}
         />
         <ControlButton
-          glyph="💬"
+          icon={MessageCircle}
           label={t('incall.chat')}
           active={chatOpen}
           onPress={() => setChatOpen((v) => !v)}
         />
         <Pressable style={styles.endButton} onPress={onEnd}>
-          <Text style={styles.endGlyph}>📞</Text>
+          <PhoneOff size={22} color={colors.surface} strokeWidth={2.2} />
           <Text style={styles.endLabel}>{t('incall.end')}</Text>
         </Pressable>
       </View>
@@ -93,19 +102,19 @@ export function InCallScreen({ therapistName, durationMin, onEnd }: Props) {
 }
 
 function ControlButton({
-  glyph,
+  icon: IconCmp,
   label,
   active,
   onPress,
 }: {
-  glyph: string;
+  icon: ComponentType<LucideProps>;
   label: string;
   active: boolean;
   onPress: () => void;
 }) {
   return (
     <Pressable style={[styles.control, active && styles.controlActive]} onPress={onPress}>
-      <Text style={styles.controlGlyph}>{glyph}</Text>
+      <IconCmp size={22} color={colors.surface} strokeWidth={2} />
       <Text style={[styles.controlLabel, active && styles.controlLabelActive]}>{label}</Text>
     </Pressable>
   );
@@ -137,7 +146,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: 'rgba(255,255,255,0.2)',
   },
-  selfTileGlyph: { fontSize: 28 },
   selfTileLabel: { color: colors.surface, fontSize: font.size.micro, opacity: 0.85 },
   statusBar: {
     position: 'absolute',
@@ -182,7 +190,6 @@ const styles = StyleSheet.create({
     gap: 4,
   },
   controlActive: { backgroundColor: colors.primary },
-  controlGlyph: { fontSize: 22 },
   controlLabel: { color: colors.surface, opacity: 0.8, fontSize: font.size.micro },
   controlLabelActive: { opacity: 1, fontWeight: font.weight.bold },
   endButton: {
@@ -193,6 +200,5 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 4,
   },
-  endGlyph: { fontSize: 22 },
   endLabel: { color: colors.surface, fontSize: font.size.micro, fontWeight: font.weight.bold },
 });

@@ -1,6 +1,14 @@
 import { useState } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { StyleSheet, Text } from 'react-native';
+import { StyleSheet } from 'react-native';
+import {
+  type LucideIcon,
+  Headphones,
+  Home,
+  MessageCircle,
+  Mic,
+  Stethoscope,
+} from 'lucide-react-native';
 import { useTranslation } from 'react-i18next';
 
 import {
@@ -15,16 +23,23 @@ import type { BookingMode } from '@/services/api';
 
 const Tab = createBottomTabNavigator();
 
-const TAB_GLYPHS: Record<string, string> = {
-  Home: '🏠',
-  Therapists: '🩺',
-  Sessions: '🎧',
-  Community: '💬',
-  Podcast: '🎙️',
+const TAB_ICONS: Record<string, LucideIcon> = {
+  Home,
+  Therapists: Stethoscope,
+  Sessions: Headphones,
+  Community: MessageCircle,
+  Podcast: Mic,
 };
 
 function TabIcon({ name, focused }: { name: string; focused: boolean }) {
-  return <Text style={[styles.tabIcon, { opacity: focused ? 1 : 0.55 }]}>{TAB_GLYPHS[name]}</Text>;
+  const IconCmp = TAB_ICONS[name];
+  return (
+    <IconCmp
+      size={22}
+      color={focused ? colors.primary : colors.textLo}
+      strokeWidth={focused ? 2.4 : 1.8}
+    />
+  );
 }
 
 type Props = {
@@ -97,5 +112,4 @@ const styles = StyleSheet.create({
     paddingBottom: 8,
   },
   tabLabel: { fontSize: font.size.micro, fontWeight: font.weight.medium },
-  tabIcon: { fontSize: 22 },
 });

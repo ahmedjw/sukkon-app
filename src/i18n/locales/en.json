@@ -37,7 +37,8 @@
     "topRated": "Top Rated Doctors",
     "recommended": "Recommended for you",
     "noTherapists": "No therapists yet",
-    "noSessions": "No sessions yet"
+    "noSessions": "No sessions yet",
+    "specialEmpty": "No picks yet — check back soon."
   },
   "conditions": {
     "BIPOLAR": "Bipolar",
@@ -66,8 +67,8 @@
     "joinNow": "Join now",
     "openLobby": "Open lobby",
     "continueToPay": "Continue to payment",
-    "payMockTitle": "Mock checkout",
-    "payMockBody": "Phase 3 ships with a mock Stripe step. Real payments are wired in Phase 6.",
+    "payMockTitle": "Payment preview",
+    "payMockBody": "Online payment is coming soon — confirming this booking won't charge your card.",
     "payNow": "Pay {{amount}}",
     "policyTitle": "Cancellation policy",
     "policyBody": "Free cancellation up to 12 hours before your session. After that, a 50% fee applies.",
@@ -160,7 +161,7 @@
     "savedToast": "Saved to My Session",
     "unsavedToast": "Removed from saved",
     "savedEmpty": "Nothing saved yet",
-    "savedEmptyHint": "Tap ☆ on any session to save it for later."
+    "savedEmptyHint": "Tap the bookmark on any session to save it for later."
   },
   "community": {
     "share": "Share your experience",
@@ -234,11 +235,19 @@
     "signUpTitle": "Create your account",
     "signUpSubtitle": "Begin your path to tranquility",
     "forgotTitle": "Forgot your password?",
-    "forgotSubtitle": "We'll email you a reset link",
+    "forgotSubtitle": "We'll email you a reset code",
     "signIn": "Sign in",
     "signUp": "Sign up",
     "forgotPassword": "Forgot password?",
-    "sendReset": "Send reset link",
+    "sendReset": "Send reset code",
+    "resetStepSubtitle": "Enter the reset code and choose a new password.",
+    "resetCode": "Reset code",
+    "resetCodePlaceholder": "Paste the code from the email",
+    "newPassword": "New password",
+    "newPasswordPlaceholder": "At least 8 characters",
+    "resetPasswordCta": "Reset password",
+    "resetDone": "Password updated. Sign in with your new password.",
+    "haveResetCode": "I already have a code",
     "email": "Email",
     "emailPlaceholder": "you@example.com",
     "password": "Password",
@@ -252,15 +261,19 @@
     "google": "Google",
     "facebook": "Facebook",
     "twitter": "Twitter",
-    "agree": "By continuing, you agree to our Terms and Privacy Policy.",
-    "resetSent": "If that email exists, we've sent a reset link."
+    "agreePrefix": "By continuing, you agree to our",
+    "agreeAnd": "and",
+    "termsLink": "Terms",
+    "privacyLink": "Privacy Policy",
+    "resetSent": "If that email exists, we've sent a reset code."
   },
   "validation": {
     "emailRequired": "Email is required",
     "emailInvalid": "Enter a valid email address",
     "passwordRequired": "Password is required",
     "passwordShort": "Use at least 8 characters",
-    "nameRequired": "Name is required"
+    "nameRequired": "Name is required",
+    "resetCodeInvalid": "Enter the full reset code from the email"
   },
   "settings": {
     "title": "Settings",
@@ -268,7 +281,19 @@
     "language": "Language",
     "notifications": "Notifications",
     "privacy": "Privacy",
-    "signOut": "Sign out"
+    "signOut": "Sign out",
+    "rtlHint": "Switching to Arabic flips the layout to RTL. Restart the app if some screens don't flip on the first toggle.",
+    "account": "Account",
+    "deleteAccount": "Delete account",
+    "deleteConfirmTitle": "Delete your account?",
+    "deleteConfirmBody": "This permanently removes your profile, bookings, mood history, and saved content. This cannot be undone.",
+    "deleted": "Your account has been deleted",
+    "legal": "Legal",
+    "terms": "Terms of Service",
+    "privacyPolicy": "Privacy Policy",
+    "crisisTitle": "Crisis support",
+    "crisisBody": "Sukoun is not an emergency service. If you're in immediate danger or thinking about harming yourself, contact your local emergency number right away.",
+    "crisisFind": "Find a helpline"
   },
   "common": {
     "language": "Language",
@@ -281,8 +306,6 @@
     "back": "Back",
     "continue": "Continue",
     "any": "Any",
-    "all": "All",
-    "comingSoon": "Coming soon",
-    "phaseZero": "Phase 0 scaffold — UI only"
+    "all": "All"
   }
 }

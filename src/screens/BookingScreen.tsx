@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { ArrowLeft, Check } from 'lucide-react-native';
 import { useTranslation } from 'react-i18next';
 
 import {
@@ -100,8 +101,9 @@ export function BookingScreen({ therapistId, mode, onClose, onJoinCall }: Props)
   return (
     <SafeAreaView style={styles.safe} edges={['top', 'bottom']}>
       <View style={styles.headerRow}>
-        <Pressable onPress={onBack} hitSlop={8}>
-          <Text style={styles.back}>← {t('common.back')}</Text>
+        <Pressable onPress={onBack} hitSlop={8} style={styles.backRow}>
+          <ArrowLeft size={18} color={colors.primary} strokeWidth={2.2} />
+          <Text style={styles.back}>{t('common.back')}</Text>
         </Pressable>
         <Text style={styles.title}>
           {mode === 'instant' ? t('home.consultInstant') : t('home.consultScheduled')}
@@ -389,7 +391,7 @@ function DoneStep({
       <ScrollView contentContainerStyle={styles.scroll}>
         <View style={styles.doneHero}>
           <View style={styles.doneIcon}>
-            <Text style={styles.doneIconText}>✓</Text>
+            <Check size={36} color={colors.primaryDk} strokeWidth={3} />
           </View>
           <Text style={styles.doneTitle}>{t('booking.confirmedTitle')}</Text>
           <Text style={styles.doneBody}>
@@ -522,7 +524,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  doneIconText: { fontSize: 32, color: colors.primaryDk, fontWeight: font.weight.bold },
+  backRow: { flexDirection: 'row', alignItems: 'center', gap: 4 },
   doneTitle: { fontSize: font.size.h2, color: colors.textHi, fontWeight: font.weight.bold },
   doneBody: { fontSize: font.size.body, color: colors.textMd, textAlign: 'center', paddingHorizontal: space[4] },
 });

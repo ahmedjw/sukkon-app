@@ -1,5 +1,6 @@
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { ArrowLeft } from 'lucide-react-native';
 import { useTranslation } from 'react-i18next';
 
 import {
@@ -28,8 +29,9 @@ export function TherapistDetailScreen({ therapistId, onBack, onBook }: Props) {
   return (
     <SafeAreaView style={styles.safe} edges={['top', 'bottom']}>
       <View style={styles.headerRow}>
-        <Pressable onPress={onBack} hitSlop={8}>
-          <Text style={styles.back}>← {t('common.back')}</Text>
+        <Pressable onPress={onBack} hitSlop={8} style={styles.backRow}>
+          <ArrowLeft size={18} color={colors.primary} strokeWidth={2.2} />
+          <Text style={styles.back}>{t('common.back')}</Text>
         </Pressable>
         <Text style={styles.headerTitle}>{t('therapists.detailTitle')}</Text>
         <View style={{ width: 60 }} />
@@ -133,6 +135,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: space[4],
     paddingVertical: space[3],
   },
+  backRow: { flexDirection: 'row', alignItems: 'center', gap: 4 },
   back: { color: colors.primary, fontSize: font.size.body, fontWeight: font.weight.semibold },
   headerTitle: { fontSize: font.size.h3, color: colors.textHi, fontWeight: font.weight.bold },
   body: { padding: space[4], gap: space[3] },

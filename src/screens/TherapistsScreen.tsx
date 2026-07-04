@@ -1,6 +1,7 @@
 import { useCallback, useMemo, useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { CalendarClock, SlidersHorizontal, Sprout } from 'lucide-react-native';
 import { useTranslation } from 'react-i18next';
 
 import {
@@ -155,7 +156,7 @@ function AllTherapists({
             containerStyle={{ flex: 1 }}
           />
           <Pressable onPress={openFilters} style={styles.filterButton}>
-            <Text style={styles.filterIcon}>⚙︎</Text>
+            <SlidersHorizontal size={20} color={colors.textHi} strokeWidth={2} />
             {activeFilterCount > 0 ? (
               <View style={styles.filterBadge}>
                 <Text style={styles.filterBadgeText}>{activeFilterCount}</Text>
@@ -291,7 +292,7 @@ function ListBody({
   }
   if (state.status === 'error') return <ErrorState onRetry={state.reload} />;
   const items = state.data ?? [];
-  if (items.length === 0) return <EmptyState glyph="🌱" title={t('therapists.noResults')} />;
+  if (items.length === 0) return <EmptyState icon={Sprout} title={t('therapists.noResults')} />;
 
   return (
     <View style={{ gap: space[3] }}>
@@ -329,7 +330,7 @@ function MyTherapist() {
     return (
       <View style={styles.emptyWrap}>
         <EmptyState
-          glyph="📅"
+          icon={CalendarClock}
           title={t('therapists.noBookings')}
           subtitle={t('therapists.noBookingsHint')}
         />
@@ -441,7 +442,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  filterIcon: { fontSize: 22, color: colors.textHi },
   filterBadge: {
     position: 'absolute',
     top: -4,

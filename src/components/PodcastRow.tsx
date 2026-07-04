@@ -1,4 +1,5 @@
 import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Play } from 'lucide-react-native';
 
 import { colors, radius, space, font } from '@theme/tokens';
 
@@ -39,7 +40,7 @@ export function PodcastRow({ podcast, onPress, onPlay }: Props) {
         <Text style={styles.duration}>{podcast.durationMin} min</Text>
       </View>
       <Pressable onPress={onPlay} style={styles.play} hitSlop={8}>
-        <Text style={styles.playGlyph}>▶</Text>
+        <Play size={16} color={colors.surface} fill={colors.surface} strokeWidth={0} />
       </Pressable>
     </Pressable>
   );
@@ -67,6 +68,6 @@ const styles = StyleSheet.create({
     backgroundColor: colors.primary,
     alignItems: 'center',
     justifyContent: 'center',
+    paddingLeft: 2,
   },
-  playGlyph: { color: colors.surface, fontSize: 14, marginLeft: 2 },
 });

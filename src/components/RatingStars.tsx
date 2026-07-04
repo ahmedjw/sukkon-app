@@ -1,4 +1,5 @@
 import { StyleSheet, Text, View } from 'react-native';
+import { Star, StarHalf } from 'lucide-react-native';
 
 import { colors, font } from '@theme/tokens';
 
@@ -18,17 +19,19 @@ export function RatingStars({ rating, size = 14, showValue = true }: Props) {
 
   return (
     <View style={styles.row}>
-      {stars.map((s, i) => (
-        <Text
-          key={i}
-          style={[
-            styles.star,
-            { fontSize: size, color: s === 'empty' ? colors.textLo : colors.yellow },
-          ]}
-        >
-          {s === 'half' ? '⯪' : '★'}
-        </Text>
-      ))}
+      {stars.map((s, i) =>
+        s === 'half' ? (
+          <StarHalf key={i} size={size} color={colors.yellow} fill={colors.yellow} strokeWidth={1.5} />
+        ) : (
+          <Star
+            key={i}
+            size={size}
+            color={s === 'full' ? colors.yellow : colors.textLo}
+            fill={s === 'full' ? colors.yellow : 'transparent'}
+            strokeWidth={1.5}
+          />
+        ),
+      )}
       {showValue ? <Text style={[styles.value, { fontSize: size - 2 }]}>{rating.toFixed(1)}</Text> : null}
     </View>
   );
@@ -36,6 +39,5 @@ export function RatingStars({ rating, size = 14, showValue = true }: Props) {
 
 const styles = StyleSheet.create({
   row: { flexDirection: 'row', alignItems: 'center', gap: 2 },
-  star: { lineHeight: 16 },
   value: { color: colors.textMd, marginLeft: 4, fontWeight: font.weight.medium },
 });

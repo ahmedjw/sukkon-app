@@ -1,6 +1,7 @@
 import { useCallback, useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { Bookmark, BookmarkCheck, Leaf, Play } from 'lucide-react-native';
 import { useTranslation } from 'react-i18next';
 
 import {
@@ -121,7 +122,7 @@ function MySessions() {
     return (
       <View style={styles.emptyWrap}>
         <EmptyState
-          glyph="🔖"
+          icon={Bookmark}
           title={t('sessions.savedEmpty')}
           subtitle={t('sessions.savedEmptyHint')}
         />
@@ -153,7 +154,8 @@ function PopularHero({ session }: { session: SessionDetail }) {
         {t('booking.minutes', { count: session.durationMin })}
       </Text>
       <Pressable style={styles.heroPlay}>
-        <Text style={styles.heroPlayLabel}>▶ {t('sessions.play')}</Text>
+        <Play size={14} color={colors.surface} fill={colors.surface} strokeWidth={0} />
+        <Text style={styles.heroPlayLabel}>{t('sessions.play')}</Text>
       </Pressable>
     </View>
   );
@@ -177,7 +179,7 @@ function SessionList({
   }
   if (state.status === 'error') return <ErrorState onRetry={state.reload} />;
   const items = state.data ?? [];
-  if (items.length === 0) return <EmptyState glyph="🌿" title={t('sessions.noResults')} />;
+  if (items.length === 0) return <EmptyState icon={Leaf} title={t('sessions.noResults')} />;
 
   return (
     <View style={styles.grid}>
@@ -189,9 +191,11 @@ function SessionList({
             onPress={() => onToggleSave(s.id, !s.saved)}
             hitSlop={6}
           >
-            <Text style={[styles.saveGlyph, s.saved && styles.saveGlyphActive]}>
-              {s.saved ? '★' : '☆'}
-            </Text>
+            {s.saved ? (
+              <BookmarkCheck size={18} color={colors.primaryDk} fill={colors.primarySoft} strokeWidth={1.8} />
+            ) : (
+              <Bookmark size={18} color={colors.textMd} strokeWidth={1.8} />
+            )}
           </Pressable>
         </View>
       ))}
@@ -212,7 +216,7 @@ function SavedRow({ session, onUnsave }: { session: SessionDetail; onUnsave: () 
           </Text>
         </View>
         <Pressable onPress={onUnsave} hitSlop={6}>
-          <Text style={[styles.saveGlyph, styles.saveGlyphActive]}>★</Text>
+          <BookmarkCheck size={20} color={colors.primaryDk} fill={colors.primarySoft} strokeWidth={1.8} />
         </Pressable>
       </View>
     </Card>
@@ -277,8 +281,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  saveGlyph: { fontSize: 18, color: colors.textMd },
-  saveGlyphActive: { color: colors.yellow },
   emptyWrap: { flex: 1, justifyContent: 'center', padding: space[4] },
   savedRowInner: { flexDirection: 'row', alignItems: 'center', gap: space[3] },
   savedCategory: {

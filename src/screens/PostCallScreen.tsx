@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { Star } from 'lucide-react-native';
 import { useTranslation } from 'react-i18next';
 
 import { Avatar, Button, Card, Chip, Input, useToast } from '@components/index';
@@ -53,11 +54,19 @@ export function PostCallScreen({ bookingId, therapistName, onClose }: Props) {
         <Card>
           <Text style={styles.groupLabel}>{t('postcall.rate')}</Text>
           <View style={styles.starRow}>
-            {[1, 2, 3, 4, 5].map((n) => (
-              <Pressable key={n} onPress={() => setRating(n)} hitSlop={6}>
-                <Text style={[styles.star, n <= rating && styles.starActive]}>★</Text>
-              </Pressable>
-            ))}
+            {[1, 2, 3, 4, 5].map((n) => {
+              const filled = n <= rating;
+              return (
+                <Pressable key={n} onPress={() => setRating(n)} hitSlop={6}>
+                  <Star
+                    size={36}
+                    color={filled ? colors.yellow : colors.border}
+                    fill={filled ? colors.yellow : 'transparent'}
+                    strokeWidth={1.5}
+                  />
+                </Pressable>
+              );
+            })}
           </View>
         </Card>
 
@@ -121,8 +130,6 @@ const styles = StyleSheet.create({
     marginBottom: space[2],
   },
   starRow: { flexDirection: 'row', justifyContent: 'center', gap: space[2] },
-  star: { fontSize: 36, color: colors.border },
-  starActive: { color: colors.yellow },
   chipRow: { flexDirection: 'row', flexWrap: 'wrap', gap: space[2] },
   footer: {
     flexDirection: 'row',

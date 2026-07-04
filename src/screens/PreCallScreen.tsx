@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { ArrowLeft, Mic, MicOff, Video, VideoOff } from 'lucide-react-native';
 import { useTranslation } from 'react-i18next';
 
 import { Avatar, Button, Card } from '@components/index';
@@ -20,8 +21,9 @@ export function PreCallScreen({ therapistName, onBack, onJoin }: Props) {
   return (
     <SafeAreaView style={styles.safe} edges={['top', 'bottom']}>
       <View style={styles.headerRow}>
-        <Pressable onPress={onBack} hitSlop={8}>
-          <Text style={styles.back}>← {t('common.back')}</Text>
+        <Pressable onPress={onBack} hitSlop={8} style={styles.backRow}>
+          <ArrowLeft size={18} color={colors.primary} strokeWidth={2.2} />
+          <Text style={styles.back}>{t('common.back')}</Text>
         </Pressable>
         <Text style={styles.title}>{t('precall.title')}</Text>
         <View style={{ width: 60 }} />
@@ -36,7 +38,7 @@ export function PreCallScreen({ therapistName, onBack, onJoin }: Props) {
             </View>
           ) : (
             <View style={styles.camOff}>
-              <Text style={styles.camOffGlyph}>📷</Text>
+              <VideoOff size={48} color={colors.surface} strokeWidth={1.5} />
               <Text style={styles.camOffLabel}>{t('precall.cameraOff')}</Text>
             </View>
           )}
@@ -52,9 +54,11 @@ export function PreCallScreen({ therapistName, onBack, onJoin }: Props) {
             style={[styles.control, !micOn && styles.controlOff]}
             onPress={() => setMicOn((v) => !v)}
           >
-            <Text style={[styles.controlGlyph, !micOn && styles.controlGlyphOff]}>
-              {micOn ? '🎙️' : '🔇'}
-            </Text>
+            {micOn ? (
+              <Mic size={24} color={colors.textHi} strokeWidth={2} />
+            ) : (
+              <MicOff size={24} color={colors.danger} strokeWidth={2} />
+            )}
             <Text style={[styles.controlLabel, !micOn && styles.controlLabelOff]}>
               {micOn ? t('precall.micOn') : t('precall.micOff')}
             </Text>
@@ -63,9 +67,11 @@ export function PreCallScreen({ therapistName, onBack, onJoin }: Props) {
             style={[styles.control, !camOn && styles.controlOff]}
             onPress={() => setCamOn((v) => !v)}
           >
-            <Text style={[styles.controlGlyph, !camOn && styles.controlGlyphOff]}>
-              {camOn ? '📹' : '🚫'}
-            </Text>
+            {camOn ? (
+              <Video size={24} color={colors.textHi} strokeWidth={2} />
+            ) : (
+              <VideoOff size={24} color={colors.danger} strokeWidth={2} />
+            )}
             <Text style={[styles.controlLabel, !camOn && styles.controlLabelOff]}>
               {camOn ? t('precall.camOn') : t('precall.camOff')}
             </Text>
@@ -89,6 +95,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: space[4],
     paddingVertical: space[3],
   },
+  backRow: { flexDirection: 'row', alignItems: 'center', gap: 4 },
   back: { color: colors.primary, fontSize: font.size.body, fontWeight: font.weight.semibold },
   title: { fontSize: font.size.h3, color: colors.textHi, fontWeight: font.weight.bold },
   preview: { flex: 1, padding: space[4], gap: space[4] },
@@ -102,7 +109,6 @@ const styles = StyleSheet.create({
   camInner: { alignItems: 'center', gap: space[3] },
   camLabel: { color: colors.surface, fontSize: font.size.caption, opacity: 0.85 },
   camOff: { alignItems: 'center', gap: space[2] },
-  camOffGlyph: { fontSize: 48 },
   camOffLabel: { color: colors.surface, opacity: 0.8 },
   therapistTo: { fontSize: font.size.caption, color: colors.textMd },
   therapistName: { fontSize: font.size.h3, color: colors.textHi, fontWeight: font.weight.bold, marginTop: 2 },
@@ -118,8 +124,6 @@ const styles = StyleSheet.create({
     borderColor: colors.border,
   },
   controlOff: { backgroundColor: colors.surfaceAlt, borderColor: colors.danger },
-  controlGlyph: { fontSize: 28 },
-  controlGlyphOff: {},
   controlLabel: { fontSize: font.size.caption, color: colors.textHi, fontWeight: font.weight.semibold },
   controlLabelOff: { color: colors.danger },
   footer: {

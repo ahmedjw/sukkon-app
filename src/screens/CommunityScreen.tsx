@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { Heart, MessageCircle, Sprout } from 'lucide-react-native';
 import { useTranslation } from 'react-i18next';
 
 import {
@@ -134,7 +135,7 @@ function FeedBody({
   }
   if (state.status === 'error') return <ErrorState onRetry={state.reload} />;
   const items = state.data ?? [];
-  if (items.length === 0) return <EmptyState glyph="🌱" title={t('community.feedEmpty')} />;
+  if (items.length === 0) return <EmptyState icon={Sprout} title={t('community.feedEmpty')} />;
 
   return (
     <View style={{ gap: space[3] }}>
@@ -163,13 +164,16 @@ function PostCard({ post, onLike }: { post: Post; onLike: () => void }) {
       <Text style={styles.postBody}>{post.body}</Text>
       <View style={styles.postActions}>
         <Pressable style={styles.action} onPress={onLike} hitSlop={6}>
-          <Text style={[styles.actionGlyph, post.likedByMe && styles.actionGlyphActive]}>
-            {post.likedByMe ? '♥' : '♡'}
-          </Text>
+          <Heart
+            size={18}
+            color={post.likedByMe ? colors.danger : colors.textMd}
+            fill={post.likedByMe ? colors.danger : 'transparent'}
+            strokeWidth={1.8}
+          />
           <Text style={styles.actionCount}>{post.likes}</Text>
         </Pressable>
         <View style={styles.action}>
-          <Text style={styles.actionGlyph}>💬</Text>
+          <MessageCircle size={18} color={colors.textMd} strokeWidth={1.8} />
           <Text style={styles.actionCount}>{post.comments}</Text>
         </View>
       </View>
@@ -204,7 +208,5 @@ const styles = StyleSheet.create({
   postBody: { fontSize: font.size.body, color: colors.textHi, lineHeight: font.lineHeight.body },
   postActions: { flexDirection: 'row', gap: space[5], marginTop: space[3] },
   action: { flexDirection: 'row', alignItems: 'center', gap: 6 },
-  actionGlyph: { fontSize: 18, color: colors.textMd },
-  actionGlyphActive: { color: colors.danger },
   actionCount: { fontSize: font.size.caption, color: colors.textMd, fontWeight: font.weight.medium },
 });

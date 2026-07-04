@@ -10,6 +10,7 @@ import {
   View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { type LucideIcon, Globe, Leaf, Stethoscope } from 'lucide-react-native';
 import { useTranslation } from 'react-i18next';
 
 import { Button } from '@components/index';
@@ -19,16 +20,38 @@ const { width } = Dimensions.get('window');
 
 type Slide = {
   key: string;
-  glyph: string;
+  icon: LucideIcon;
+  iconColor: string;
   titleKey: string;
   bodyKey: string;
   bg: string;
 };
 
 const SLIDES: Slide[] = [
-  { key: '1', glyph: '🌿', titleKey: 'welcome.slide1Title', bodyKey: 'welcome.slide1Body', bg: colors.primarySoft },
-  { key: '2', glyph: '🩺', titleKey: 'welcome.slide2Title', bodyKey: 'welcome.slide2Body', bg: '#FFF4D1' },
-  { key: '3', glyph: '🌍', titleKey: 'welcome.slide3Title', bodyKey: 'welcome.slide3Body', bg: '#E0EBFA' },
+  {
+    key: '1',
+    icon: Leaf,
+    iconColor: colors.primaryDk,
+    titleKey: 'welcome.slide1Title',
+    bodyKey: 'welcome.slide1Body',
+    bg: colors.primarySoft,
+  },
+  {
+    key: '2',
+    icon: Stethoscope,
+    iconColor: '#9C7A00',
+    titleKey: 'welcome.slide2Title',
+    bodyKey: 'welcome.slide2Body',
+    bg: '#FFF4D1',
+  },
+  {
+    key: '3',
+    icon: Globe,
+    iconColor: colors.navy,
+    titleKey: 'welcome.slide3Title',
+    bodyKey: 'welcome.slide3Body',
+    bg: '#E0EBFA',
+  },
 ];
 
 type Props = {
@@ -70,15 +93,18 @@ export function WelcomeScreen({ onFinish }: Props) {
         showsHorizontalScrollIndicator={false}
         onScroll={onScroll}
         scrollEventThrottle={16}
-        renderItem={({ item }) => (
-          <View style={[styles.slide, { width }]}>
-            <View style={[styles.illustration, { backgroundColor: item.bg }]}>
-              <Text style={styles.glyph}>{item.glyph}</Text>
+        renderItem={({ item }) => {
+          const IconCmp = item.icon;
+          return (
+            <View style={[styles.slide, { width }]}>
+              <View style={[styles.illustration, { backgroundColor: item.bg }]}>
+                <IconCmp size={96} color={item.iconColor} strokeWidth={1.4} />
+              </View>
+              <Text style={styles.title}>{t(item.titleKey)}</Text>
+              <Text style={styles.body}>{t(item.bodyKey)}</Text>
             </View>
-            <Text style={styles.title}>{t(item.titleKey)}</Text>
-            <Text style={styles.body}>{t(item.bodyKey)}</Text>
-          </View>
-        )}
+          );
+        }}
       />
 
       <View style={styles.dots}>
@@ -118,7 +144,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  glyph: { fontSize: 96 },
   title: {
     fontSize: font.size.h1,
     color: colors.textHi,

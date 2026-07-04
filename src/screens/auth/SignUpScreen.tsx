@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 
 import { useAuth } from '@/auth';
 import { validateEmail, validateName, validatePassword } from '@/auth/validation';
-import { Button, Input, PasswordInput, SocialButton, useToast } from '@components/index';
+import { Button, Input, LegalLinks, PasswordInput, SocialButton, useToast } from '@components/index';
 import { colors, font, space } from '@theme/tokens';
 
 type Props = {
@@ -79,20 +79,24 @@ export function SignUpScreen({ onSignIn }: Props) {
             />
 
             <Button title={t('auth.signUp')} fullWidth loading={busy} onPress={onSubmit} />
-            <Text style={styles.agree}>{t('auth.agree')}</Text>
+            <LegalLinks />
           </View>
 
-          <View style={styles.divider}>
-            <View style={styles.dividerLine} />
-            <Text style={styles.dividerLabel}>{t('auth.or')}</Text>
-            <View style={styles.dividerLine} />
-          </View>
+          {__DEV__ ? (
+            <>
+              <View style={styles.divider}>
+                <View style={styles.dividerLine} />
+                <Text style={styles.dividerLabel}>{t('auth.or')}</Text>
+                <View style={styles.dividerLine} />
+              </View>
 
-          <View style={styles.socialRow}>
-            <SocialButton provider="google" onPress={() => signInWithProvider('google')} />
-            <SocialButton provider="facebook" onPress={() => signInWithProvider('facebook')} />
-            <SocialButton provider="twitter" onPress={() => signInWithProvider('twitter')} />
-          </View>
+              <View style={styles.socialRow}>
+                <SocialButton provider="google" onPress={() => signInWithProvider('google')} />
+                <SocialButton provider="facebook" onPress={() => signInWithProvider('facebook')} />
+                <SocialButton provider="twitter" onPress={() => signInWithProvider('twitter')} />
+              </View>
+            </>
+          ) : null}
 
           <View style={styles.bottomLink}>
             <Text style={styles.bottomLinkText}>{t('auth.haveAccount')} </Text>
@@ -113,7 +117,6 @@ const styles = StyleSheet.create({
   title: { fontSize: font.size.h1, color: colors.textHi, fontWeight: font.weight.bold },
   subtitle: { fontSize: font.size.body, color: colors.textMd },
   form: { gap: space[3] },
-  agree: { color: colors.textLo, fontSize: font.size.caption, textAlign: 'center', marginTop: space[1] },
   divider: { flexDirection: 'row', alignItems: 'center', gap: space[3] },
   dividerLine: { flex: 1, height: 1, backgroundColor: colors.border },
   dividerLabel: { color: colors.textLo, fontSize: font.size.caption },

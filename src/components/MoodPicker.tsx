@@ -1,15 +1,16 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { type LucideIcon, Frown, Glasses, Laugh, Meh, Smile } from 'lucide-react-native';
 
 import { colors, radius, space, font } from '@theme/tokens';
 
 export type Mood = 'HAPPY' | 'EXCITED' | 'NEUTRAL' | 'ANGRY' | 'COOL';
 
-const MOODS: { key: Mood; emoji: string; labelKey: string }[] = [
-  { key: 'HAPPY', emoji: '😊', labelKey: 'happy' },
-  { key: 'EXCITED', emoji: '😄', labelKey: 'excited' },
-  { key: 'NEUTRAL', emoji: '😐', labelKey: 'neutral' },
-  { key: 'ANGRY', emoji: '😠', labelKey: 'angry' },
-  { key: 'COOL', emoji: '😎', labelKey: 'cool' },
+const MOODS: { key: Mood; icon: LucideIcon; labelKey: string }[] = [
+  { key: 'HAPPY', icon: Smile, labelKey: 'happy' },
+  { key: 'EXCITED', icon: Laugh, labelKey: 'excited' },
+  { key: 'NEUTRAL', icon: Meh, labelKey: 'neutral' },
+  { key: 'ANGRY', icon: Frown, labelKey: 'angry' },
+  { key: 'COOL', icon: Glasses, labelKey: 'cool' },
 ];
 
 type Props = {
@@ -22,6 +23,7 @@ export function MoodPicker({ value, onChange }: Props) {
     <View style={styles.row}>
       {MOODS.map((m) => {
         const active = value === m.key;
+        const IconCmp = m.icon;
         return (
           <Pressable
             key={m.key}
@@ -32,7 +34,11 @@ export function MoodPicker({ value, onChange }: Props) {
               pressed && styles.pressed,
             ]}
           >
-            <Text style={styles.emoji}>{m.emoji}</Text>
+            <IconCmp
+              size={28}
+              color={active ? colors.primaryDk : colors.textMd}
+              strokeWidth={1.8}
+            />
             <Text style={[styles.label, active && styles.labelActive]}>{m.labelKey}</Text>
           </Pressable>
         );
@@ -52,10 +58,10 @@ const styles = StyleSheet.create({
     backgroundColor: colors.surfaceAlt,
     borderWidth: 2,
     borderColor: 'transparent',
+    gap: space[1],
   },
   itemActive: { borderColor: colors.primary, backgroundColor: colors.primarySoft },
   pressed: { opacity: 0.7 },
-  emoji: { fontSize: 28, marginBottom: 4 },
   label: {
     fontSize: font.size.micro,
     color: colors.textMd,

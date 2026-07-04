@@ -2,7 +2,6 @@ export { BookingScreen } from './BookingScreen';
 export { CommunityScreen } from './CommunityScreen';
 export { HomeScreen } from './HomeScreen';
 export { InCallScreen } from './InCallScreen';
-export { PlaceholderScreen } from './PlaceholderScreen';
 export { PodcastScreen } from './PodcastScreen';
 export { PostCallScreen } from './PostCallScreen';
 export { PreCallScreen } from './PreCallScreen';

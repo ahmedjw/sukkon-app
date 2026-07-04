@@ -1,6 +1,7 @@
 import { useCallback, useState } from 'react';
 import { FlatList, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { Bell } from 'lucide-react-native';
 import { useTranslation } from 'react-i18next';
 
 import { useAuth } from '@/auth';
@@ -80,7 +81,7 @@ export function HomeScreen({ onOpenSettings, onStartBooking, onOpenTherapist }: 
             <Text style={styles.eyebrow}>{t('app.tagline')}</Text>
             <Text style={styles.greeting}>{t(`home.${getGreetingKey()}`, { name: userName })}</Text>
           </View>
-          <IconButton glyph="🔔" badge={2} />
+          <IconButton icon={Bell} />
         </View>
 
         <Card>
@@ -135,6 +136,7 @@ function SectionTitle({ children }: { children: React.ReactNode }) {
 }
 
 function SpecialForYou({ state }: { state: ReturnType<typeof useAsync<SessionSummary[]>> }) {
+  const { t } = useTranslation();
   if (state.status === 'loading' && !state.data) {
     return (
       <View style={styles.specialSkeletonRow}>
@@ -152,7 +154,7 @@ function SpecialForYou({ state }: { state: ReturnType<typeof useAsync<SessionSum
   }
   if (state.status === 'error') return <ErrorState onRetry={state.reload} />;
   const items = state.data ?? [];
-  if (items.length === 0) return <EmptyState title="—" />;
+  if (items.length === 0) return <EmptyState title={t('home.specialEmpty')} />;
 
   return (
     <FlatList
@@ -190,7 +192,7 @@ function TherapistList({
   }
   if (state.status === 'error') return <ErrorState onRetry={state.reload} />;
   const items = state.data ?? [];
-  if (items.length === 0) return <EmptyState glyph="🌱" title={t(emptyKey)} />;
+  if (items.length === 0) return <EmptyState title={t(emptyKey)} />;
 
   return (
     <View style={{ gap: space[3] }}>

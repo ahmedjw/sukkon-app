@@ -1,6 +1,18 @@
 import { useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import {
+  type LucideIcon,
+  Baby,
+  Globe,
+  Heart,
+  Leaf,
+  Mic,
+  Sparkles,
+  Square,
+  UtensilsCrossed,
+  Users,
+} from 'lucide-react-native';
 import { useTranslation } from 'react-i18next';
 
 import {
@@ -16,14 +28,14 @@ import { podcastsApi, type PodcastCategory, type PodcastDetail } from '@/service
 import { useAsync } from '@/services/hooks';
 import { colors, font, radius, space } from '@theme/tokens';
 
-const CATEGORIES: { key: PodcastCategory; glyph: string }[] = [
-  { key: 'all', glyph: '✨' },
-  { key: 'family', glyph: '👨‍👩‍👧' },
-  { key: 'food', glyph: '🍲' },
-  { key: 'spouse', glyph: '💞' },
-  { key: 'kids', glyph: '🧒' },
-  { key: 'self', glyph: '🌿' },
-  { key: 'world', glyph: '🌍' },
+const CATEGORIES: { key: PodcastCategory; icon: LucideIcon }[] = [
+  { key: 'all', icon: Sparkles },
+  { key: 'family', icon: Users },
+  { key: 'food', icon: UtensilsCrossed },
+  { key: 'spouse', icon: Heart },
+  { key: 'kids', icon: Baby },
+  { key: 'self', icon: Leaf },
+  { key: 'world', icon: Globe },
 ];
 
 export function PodcastScreen() {
@@ -44,21 +56,29 @@ export function PodcastScreen() {
         </Text>
 
         <View style={styles.categoryRow}>
-          {CATEGORIES.map((c) => (
-            <Pressable
-              key={c.key}
-              onPress={() => setCategory(c.key)}
-              style={[styles.categoryItem, category === c.key && styles.categoryItemActive]}
-            >
-              <Text style={styles.categoryGlyph}>{c.glyph}</Text>
-              <Text
-                style={[styles.categoryLabel, category === c.key && styles.categoryLabelActive]}
-                numberOfLines={1}
+          {CATEGORIES.map((c) => {
+            const active = category === c.key;
+            const IconCmp = c.icon;
+            return (
+              <Pressable
+                key={c.key}
+                onPress={() => setCategory(c.key)}
+                style={[styles.categoryItem, active && styles.categoryItemActive]}
               >
-                {t(`podcast.categories.${c.key}`)}
-              </Text>
-            </Pressable>
-          ))}
+                <IconCmp
+                  size={22}
+                  color={active ? colors.primaryDk : colors.textMd}
+                  strokeWidth={1.8}
+                />
+                <Text
+                  style={[styles.categoryLabel, active && styles.categoryLabelActive]}
+                  numberOfLines={1}
+                >
+                  {t(`podcast.categories.${c.key}`)}
+                </Text>
+              </Pressable>
+            );
+          })}
         </View>
 
         <Text style={styles.sectionTitle}>{t('podcast.popular')}</Text>
@@ -123,7 +143,7 @@ function PodcastList({
   }
   if (state.status === 'error') return <ErrorState onRetry={state.reload} />;
   const items = state.data ?? [];
-  if (items.length === 0) return <EmptyState glyph="🎙️" title={t('podcast.empty')} />;
+  if (items.length === 0) return <EmptyState icon={Mic} title={t('podcast.empty')} />;
 
   return (
     <Card>
@@ -151,7 +171,7 @@ function MiniPlayer({ podcast, onStop }: { podcast: PodcastDetail; onStop: () =>
         </Text>
       </View>
       <Pressable style={styles.miniButton} onPress={onStop} hitSlop={8}>
-        <Text style={styles.miniButtonGlyph}>■</Text>
+        <Square size={14} color={colors.surface} fill={colors.surface} strokeWidth={0} />
       </Pressable>
     </View>
   );
@@ -177,7 +197,6 @@ const styles = StyleSheet.create({
     gap: 4,
   },
   categoryItemActive: { backgroundColor: colors.primarySoft, borderColor: colors.primary },
-  categoryGlyph: { fontSize: 22 },
   categoryLabel: { fontSize: font.size.micro, color: colors.textMd, fontWeight: font.weight.medium },
   categoryLabelActive: { color: colors.primaryDk, fontWeight: font.weight.bold },
   sectionTitle: { fontSize: font.size.h3, color: colors.textHi, fontWeight: font.weight.semibold },
@@ -224,5 +243,4 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  miniButtonGlyph: { color: colors.surface, fontSize: 14 },
 });

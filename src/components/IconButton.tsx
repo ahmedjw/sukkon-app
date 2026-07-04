@@ -1,16 +1,27 @@
 import { Pressable, StyleSheet, Text, ViewStyle } from 'react-native';
+import type { LucideIcon } from 'lucide-react-native';
 
 import { colors, radius } from '@theme/tokens';
 
 type Props = {
-  glyph: string;
+  icon: LucideIcon;
   onPress?: () => void;
   size?: number;
+  iconSize?: number;
+  iconColor?: string;
   badge?: number;
   style?: ViewStyle;
 };
 
-export function IconButton({ glyph, onPress, size = 40, badge, style }: Props) {
+export function IconButton({
+  icon: IconCmp,
+  onPress,
+  size = 40,
+  iconSize = 20,
+  iconColor = colors.textHi,
+  badge,
+  style,
+}: Props) {
   return (
     <Pressable
       onPress={onPress}
@@ -21,7 +32,7 @@ export function IconButton({ glyph, onPress, size = 40, badge, style }: Props) {
         style,
       ]}
     >
-      <Text style={styles.glyph}>{glyph}</Text>
+      <IconCmp size={iconSize} color={iconColor} />
       {badge !== undefined && badge > 0 ? (
         <Text style={styles.badge}>{badge > 9 ? '9+' : String(badge)}</Text>
       ) : null}
@@ -36,7 +47,6 @@ const styles = StyleSheet.create({
     backgroundColor: colors.surfaceAlt,
   },
   pressed: { opacity: 0.7 },
-  glyph: { fontSize: 18 },
   badge: {
     position: 'absolute',
     top: -2,
