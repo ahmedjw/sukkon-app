@@ -1,42 +1,79 @@
+import { API_BASE_URL } from './config';
+import { authStorage } from './storage';
+
 export class ApiError extends Error {
-  constructor(public status: number, message: string) {
+  constructor(public status: number, message: string, public body?: unknown) {
     super(message);
     this.name = 'ApiError';
   }
 }
 
-type FakeRoute<T> = () => T | Promise<T>;
+type Method = 'GET' | 'POST' | 'PATCH' | 'DELETE';
 
-type ClientOptions = {
-  /** Probability (0..1) of a simulated 500 error. Useful for exercising error UI in dev. */
-  failureRate?: number;
-  /** Min latency in ms */
-  minLatency?: number;
-  /** Max latency in ms */
-  maxLatency?: number;
+type RequestOptions = {
+  method?: Method;
+  body?: unknown;
+  query?: Record<string, string | number | boolean | undefined | null>;
+  signal?: AbortSignal;
 };
 
-const DEFAULTS: Required<ClientOptions> = {
-  failureRate: 0,
-  minLatency: 250,
-  maxLatency: 600,
-};
-
-function delay(ms: number) {
-  return new Promise((res) => setTimeout(res, ms));
+function buildUrl(path: string, query?: RequestOptions['query']): string {
+  const url = `${API_BASE_URL}${path.startsWith('/') ? path : `/${path}`}`;
+  if (!query) return url;
+  const params = new URLSearchParams();
+  for (const [k, v] of Object.entries(query)) {
+    if (v === undefined || v === null) continue;
+    params.append(k, String(v));
+  }
+  const qs = params.toString();
+  return qs ? `${url}?${qs}` : url;
 }
 
-export function createMockClient(opts: ClientOptions = {}) {
-  const cfg = { ...DEFAULTS, ...opts };
+// Registered by AuthProvider: fires when an authenticated request comes back 401
+// (expired/revoked token) so the app can drop to the sign-in flow.
+let onSessionExpired: (() => void) | null = null;
+export function setSessionExpiredHandler(fn: (() => void) | null) {
+  onSessionExpired = fn;
+}
 
-  return async function call<T>(route: string, handler: FakeRoute<T>): Promise<T> {
-    const latency = cfg.minLatency + Math.random() * (cfg.maxLatency - cfg.minLatency);
-    await delay(latency);
-    if (cfg.failureRate > 0 && Math.random() < cfg.failureRate) {
-      throw new ApiError(500, `Mock failure on ${route}`);
-    }
-    return await handler();
+export async function http<T>(path: string, opts: RequestOptions = {}): Promise<T> {
+  const token = await authStorage.getToken();
+  const headers: Record<string, string> = {
+    Accept: 'application/json',
   };
+  if (opts.body !== undefined) headers['Content-Type'] = 'application/json';
+  if (token) headers.Authorization = `Bearer ${token}`;
+
+  const res = await fetch(buildUrl(path, opts.query), {
+    method: opts.method ?? 'GET',
+    headers,
+    body: opts.body !== undefined ? JSON.stringify(opts.body) : undefined,
+    signal: opts.signal,
+  });
+
+  const text = await res.text();
+  let body: unknown = null;
+  if (text) {
+    try {
+      body = JSON.parse(text);
+    } catch {
+      body = text;
+    }
+  }
+  if (res.status === 401 && token && !path.startsWith('/auth')) {
+    await authStorage.setToken(null);
+    onSessionExpired?.();
+  }
+  if (!res.ok) {
+    const message =
+      body && typeof body === 'object' && 'message' in body
+        ? String((body as { message: unknown }).message)
+        : `HTTP ${res.status}`;
+    throw new ApiError(res.status, message, body);
+  }
+  return body as T;
 }
 
-export const api = createMockClient();
+// Backwards-compat shim: prior code imported `api` and called `api(route, handler)`.
+// Routes that still rely on this signature will simply call the handler in dev mode.
+export const api = http;
