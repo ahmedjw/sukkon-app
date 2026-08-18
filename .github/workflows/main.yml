@@ -10,8 +10,11 @@ jobs:
     steps:
       - name: Welcome-Step
         run: echo "Welcome to my first CI"
-      - name: App-name
-        run: echo "at Sukkon App"
+      - name: Checkout repo
+        uses: actions/checkout@v4
+      - name: Check the repo 
+        run: ls 
+
       
       
         
